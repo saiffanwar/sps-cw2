@@ -18,14 +18,14 @@ from utilities import load_data, print_features, print_predictions
 CLASS_1_C = r'#3366ff'
 CLASS_2_C = r'#cc3300'
 CLASS_3_C = r'#ffc34d'
- 
+
 MODES = ['feature_sel', 'knn', 'alt', 'knn_3d', 'knn_pca']
 
+train_labels, train_set, test_labels, test_set = load_data()
+################################plot features##########################################
+def feature_plots(train_set, **kwargs):
 
-##########################################################################
-
-def feature_selection(train_set, train_labels, **kwargs):
-    n_features = train_set.shape[1]
+    n_features = 13
     fig, ax = plt.subplots(n_features, n_features)
     plt.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01, wspace=0.2, hspace=0.4)
 
@@ -37,10 +37,14 @@ def feature_selection(train_set, train_labels, **kwargs):
     colours[train_labels == 3] = CLASS_3_C
 
     for x in range(n_features):
-       for y in range(n_features):
-                ax[x,y].scatter(train_set[:,x], train_set[:, y], c=colours)
+        for y in range(n_features):
+            plots = ax[x,y].scatter(train_set[:,x], train_set[:, y], c=colours)
 
     return plots
+###########################################################
+def feature_selection(train_set, train_labels, **kwargs):
+
+    return []
 
 
 def knn(train_set, train_labels, test_set, k, **kwargs):
@@ -107,7 +111,7 @@ if __name__ == '__main__':
         print_predictions(prediction)
         #plots
     elif mode == 'feature_plots':
-        feature_plots = feature_selection(train_set, train_labels)
+        feature_plots = feature_plots(train_set)
         plt.plot(feature_plots)
     else:
         raise Exception('Unrecognised mode: {}. Possible modes are: {}'.format(mode, MODES))
