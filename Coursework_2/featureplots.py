@@ -53,17 +53,19 @@ class_3_colour = r'#ffc34d'
 
 class_colours = [class_1_colour, class_2_colour, class_3_colour]
 
-#print(train_set)
 
 colours = np.zeros_like(train_labels, dtype=np.object)
 colours[train_labels == 1] = class_1_colour
 colours[train_labels == 2] = class_2_colour
 colours[train_labels == 3] = class_3_colour
 
+
+#############################plots all 13x13######################
 def subplots(dataset, n, **kwargs):
     for x in range(0,n):
        for y in range(0,n):
            ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours)
 
 subplots(train_set1, n_features)
+
 plt.show()
