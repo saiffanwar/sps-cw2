@@ -19,28 +19,27 @@ CLASS_1_C = r'#3366ff'
 CLASS_2_C = r'#cc3300'
 CLASS_3_C = r'#ffc34d'
 
-MODES = ['feature_sel', 'knn', 'alt', 'knn_3d', 'knn_pca']
+MODES = ['feature_sel', 'knn', 'alt', 'knn_3d', 'knn_pca', 'feature_plots']
 
 train_labels, train_set, test_labels, test_set = load_data()
 ################################plot features##########################################
-def feature_plots(train_set, **kwargs):
+train_set, train_labels, test_labels, test_set = load_data()
+train_set1 = train_set.astype(np.float)
+print(train_set1)
+n_features = (13)
+fig, ax = plt.subplots(n_features, n_features)
+plt.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01, wspace=0.2, hspace=0.4)
 
-    n_features = 13
-    fig, ax = plt.subplots(n_features, n_features)
-    plt.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01, wspace=0.2, hspace=0.4)
+class_colours = [CLASS_1_C, CLASS_2_C, CLASS_3_C]
+colours = np.zeros_like(train_labels, dtype=np.object)
+colours[train_labels == 1] = CLASS_1_C
+colours[train_labels == 2] = CLASS_2_C
+colours[train_labels == 3] = CLASS_3_C
 
-    class_colours = [CLASS_1_C, CLASS_2_C, CLASS_3_C]
-
-    colours = np.zeros_like(train_labels, dtype=np.object)
-    colours[train_labels == 1] = CLASS_1_C
-    colours[train_labels == 2] = CLASS_2_C
-    colours[train_labels == 3] = CLASS_3_C
-
-    for x in range(n_features):
-        for y in range(n_features):
-            plots = ax[x,y].scatter(train_set[:,x], train_set[:, y], c=colours)
-
-    return plots
+def subplots(dataset, n, **kwargs):
+    for x in range(0,n):
+       for y in range(0,n):
+           ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours)
 ###########################################################
 def feature_selection(train_set, train_labels, **kwargs):
 
@@ -111,7 +110,7 @@ if __name__ == '__main__':
         print_predictions(prediction)
         #plots
     elif mode == 'feature_plots':
-        feature_plots = feature_plots(train_set)
-        plt.plot(feature_plots)
+        subplots(train_set1, n_features)
+        plt.show()
     else:
         raise Exception('Unrecognised mode: {}. Possible modes are: {}'.format(mode, MODES))

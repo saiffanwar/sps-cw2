@@ -63,10 +63,7 @@ colours[train_labels == 3] = class_3_colour
 def subplots(dataset, n, **kwargs):
     for x in range(0,n):
        for y in range(0,n):
-          # print(train_set[x], train_set[y])
-          plots = print(ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours))
-
-          return plots
+           ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours)
 
 subplots(train_set1, n_features)
 plt.show()
