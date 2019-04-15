@@ -13,33 +13,6 @@ from utilities import load_data
 plt.rc('figure', figsize=(12, 8), dpi=110)
 plt.rc('font', size=12)
 
-
-def load_data(train_set_path='data/wine_train.csv',
-              train_labels_path='data/wine_train_labels.csv',
-              test_set_path='data/wine_test.csv',
-              test_labels_path='data/wine_test_labels.csv'):
-    """
-    Loads the wine dataset. If no arguments are passed it will try to load the data
-    from the working directory with the default file names
-
-    Args:
-        train_set_path : path to the train set .csv file
-        train_labels_path : path to the train labels .csv file
-        test_set_path : path to the test set .csv file
-        test_labels_path : path to the testlabels .csv file
-    Returns:
-        (train_set, train_labels, test_set, test_labels), numpy arrays containing the
-        training and testing sets, along with the respective class labels
-    """
-
-    train_set = np.loadtxt(train_set_path, delimiter=',', #dtype = np.float
-    )
-    train_labels = np.loadtxt(train_labels_path, delimiter=',', dtype=np.int)
-    test_set = np.loadtxt(test_set_path, delimiter=',', dtype=np.float)
-    test_labels = np.loadtxt(test_labels_path, delimiter=',', dtype=np.int)
-
-    return train_set, train_labels, test_set, test_labels
-
 train_set, train_labels, test_labels, test_set = load_data()
 train_set1 = train_set.astype(np.float)
 print(train_set1)
@@ -68,4 +41,15 @@ def subplots(dataset, n, **kwargs):
 
 subplots(train_set1, n_features)
 
+plt.show()
+
+#####plotting specific ones that look good#####
+
+#plt.scatter(train_set1[:, 8], train_set1[:, 9], c=colours)
+plt.show()
+#plt.scatter(train_set1[:, 8], train_set1[:, 12], c=colours)
+plt.show()
+plt.scatter(train_set1[:, 9], train_set1[:, 12], c=colours)
+plt.show()
+#plt.scatter(train_set1[:, 8], train_set1[:, 10], c=colours)
 plt.show()
