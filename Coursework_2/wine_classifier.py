@@ -45,7 +45,7 @@ def feature_selection(train_set, train_labels, **kwargs):
 
     return []
 
-
+###########all functions required for knn##################
 def knn(train_set, train_labels, test_set, k, **kwargs):
     # write your code here and make sure you return the predictions at the end of
     # the function
