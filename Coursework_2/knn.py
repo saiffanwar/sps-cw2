@@ -23,21 +23,32 @@ colours[train_labels == 3] = class_3_colour
 
 
 #will use feature pair 10 and 13 for now but not yet finalised
-#plt.scatter(train_set[:,9], train_set[:,12], c=colours)
-#plt.show()
 
-#####calculating distance/similarity
-def euclideanDistance(wine1):
+#####calculating distance/similarity between desired wine and every other wine
+def euclideanDistance(wineNo):
     distance = 0
     features = (9,12)
+    wine1=train_set[wineNo-1:wineNo].astype(np.float)
+    wine2=train_set[0:125].astype(np.float)
     for x in  features:
             distance += np.power(wine1[:,x]-wine2[:,x], 2)
-#    print(np.sqrt(distance))
-    return np.sqrt(distance)
+    d1 = np.sqrt(distance)
+    allDistances = np.delete(d1, wineNo-1)
+    return allDistances
 
-wine1=train_set[:1].astype(np.float)
-wine2=train_set.astype(np.float)
-print(wine2)
-euclideanDistance(wine1)
 
-#print(train_set[:2])
+allDistances = euclideanDistance(4)
+
+#gets k nearest neightbours
+def nearestNeighbours(wineNo, k):
+    neighbours = []
+    distances = euclideanDistance(wineNo)
+    for x in range(0,k):
+        minimum = np.amin(distances)
+        neighbours = np.append(neighbours, minimum)
+        index = np.argwhere(distances == minimum)
+        distances = np.delete(distances, index)
+    return neighbours
+
+neighbours = nearestNeighbours(10, 1)
+print(neighbours)
