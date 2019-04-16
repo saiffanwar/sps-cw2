@@ -51,9 +51,9 @@ def classify(wineNo, k):
     neighbours = nearestNeighbours(wineNo, k)
     classes = []
     for i in range(k):
-        classes = np.append(classes,
-            (np.asscalar(train_labels[np.argwhere(distances == neighbours.item(i))])))
-    wineClass = mode(classes)
+        iclass = np.asscalar(train_labels[np.argwhere(distances == neighbours.item(i))])
+        classes = np.append(classes, iclass)
+        wineClass = mode(classes)
     return wineClass
 
 def knn(k):
@@ -64,4 +64,19 @@ def knn(k):
 
 predicted = knn(1)
 np.savetxt('results.csv', predicted, delimiter=',', fmt='%d')
-print(predicted)
+
+###########ACCURACY#######################
+
+def calculate_accuracy(gt_labels, pred_labels):
+    total = pred_labels.size
+    totalWrong = 0
+    for i in range(0,total):
+        if (pred_labels.item(i) != gt_labels.item(i)):
+            totalWrong += 1
+    accuracy = ((total-totalWrong)/total)*100
+
+    return str(accuracy)
+
+
+accuracy = calculate_accuracy(test_labels, knn(1))
+print(accuracy + '%')
