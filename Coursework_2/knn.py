@@ -64,3 +64,4 @@ def knn(k):
 
 predicted = knn(1)
 np.savetxt('results.csv', predicted, delimiter=',', fmt='%d')
+print(predicted)

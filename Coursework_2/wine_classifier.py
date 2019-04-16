@@ -13,19 +13,19 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from utilities import load_data, print_features, print_predictions
-
+from statistics import mode
 # you may use these colours to produce the scatter plots
 CLASS_1_C = r'#3366ff'
 CLASS_2_C = r'#cc3300'
 CLASS_3_C = r'#ffc34d'
 
-MODES = ['feature_sel', 'knn', 'alt', 'knn_3d', 'knn_pca', 'feature_plots']
+TASKS = ['feature_sel', 'knn', 'alt', 'knn_3d', 'knn_pca', 'feature_plots']
 
 train_labels, train_set, test_labels, test_set = load_data()
 ################################plot features##########################################
 train_set, train_labels, test_labels, test_set = load_data()
 train_set1 = train_set.astype(np.float)
-print(train_set1)
+
 n_features = (13)
 fig, ax = plt.subplots(n_features, n_features)
 plt.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01, wspace=0.2, hspace=0.4)
@@ -44,13 +44,43 @@ def subplots(dataset, n, **kwargs):
 def feature_selection(train_set, train_labels, **kwargs):
 
     return []
+###########all functions required for knn###########################
+def euclideanDistance(wineNo):
+    distance = 0
+    features = (9,12)
+    wine1=test_set[wineNo-1:wineNo].astype(np.float)
+    wine2=train_set[0:125].astype(np.float)
+    for x in  features:
+            distance += np.power(wine1[:,x]-wine2[:,x], 2)
+    allDistances = np.delete(np.sqrt(distance), wineNo-1)
+    return allDistances
 
-###########all functions required for knn##################
-def knn(train_set, train_labels, test_set, k, **kwargs):
-    # write your code here and make sure you return the predictions at the end of
-    # the function
-    return []
+#gets k nearest neighbours
+def nearestNeighbours(wineNo, k):
+    neighbours = []
+    distances = euclideanDistance(wineNo)
+    for x in range(0,k):
+        neighbours = np.append(neighbours, np.amin(distances))
+        distances = np.delete(distances, (np.argwhere(distances == np.amin(distances))))
+    return neighbours
 
+#assigns class to wine in question
+def classify(wineNo, k):
+    distances = euclideanDistance(wineNo)
+    neighbours = nearestNeighbours(wineNo, k)
+    classes = []
+    for i in range(k):
+        classes = np.append(classes,
+            (np.asscalar(train_labels[np.argwhere(distances == neighbours.item(i))])))
+    wineClass = mode(classes)
+    return wineClass
+
+def knn(k):
+    predictions = []
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(i, k))
+    return predictions
+#################################################################
 
 def alternative_classifier(train_set, train_labels, test_set, **kwargs):
     # write your code here and make sure you return the predictions at the end of
@@ -72,7 +102,7 @@ def knn_pca(train_set, train_labels, test_set, k, n_components=2, **kwargs):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('mode', nargs=1, type=str, help='Running mode. Must be one of the following modes: {}'.format(MODES))
+    parser.add_argument('task', nargs=1, type=str, help='Running task. Must be one of the following tasks: {}'.format(TASKS))
     parser.add_argument('--k', nargs='?', type=int, default=1, help='Number of neighbours for knn')
     parser.add_argument('--train_set_path', nargs='?', type=str, default='data/wine_train.csv', help='Path to the training set csv')
     parser.add_argument('--train_labels_path', nargs='?', type=str, default='data/wine_train_labels.csv', help='Path to training labels')
@@ -80,37 +110,37 @@ def parse_args():
     parser.add_argument('--test_labels_path', nargs='?', type=str, default='data/wine_test_labels.csv', help='Path to the test labels csv')
 
     args = parser.parse_args()
-    mode = args.mode[0]
+    task = args.task[0]
 
-    return args, mode
+    return args, task
 
 
 if __name__ == '__main__':
-    args, mode = parse_args() # get argument from the command line
+    args, task = parse_args() # get argument from the command line
 
     # load the data
     train_set, train_labels, test_set, test_labels = load_data(train_set_path=args.train_set_path,
                                                                        train_labels_path=args.train_labels_path,
                                                                        test_set_path=args.test_set_path,
                                                                        test_labels_path=args.test_labels_path)
-    if mode == 'feature_sel':
+    if task == 'feature_sel':
         selected_features = feature_selection(train_set, train_labels)
         print_features(selected_features)
-    elif mode == 'knn':
-        predictions = knn(train_set, train_labels, test_set, args.k)
+    elif task == 'knn':
+        predictions = knn(1)
         print_predictions(predictions)
-    elif mode == 'alt':
+    elif task == 'alt':
         predictions = alternative_classifier(train_set, train_labels, test_set)
         print_predictions(predictions)
-    elif mode == 'knn_3d':
+    elif task == 'knn_3d':
         predictions = knn_three_features(train_set, train_labels, test_set, args.k)
         print_predictions(predictions)
-    elif mode == 'knn_pca':
+    elif task == 'knn_pca':
         prediction = knn_pca(train_set, train_labels, test_set, args.k)
         print_predictions(prediction)
         #plots
-    elif mode == 'feature_plots':
+    elif task == 'feature_plots':
         subplots(train_set1, n_features)
         plt.show()
     else:
-        raise Exception('Unrecognised mode: {}. Possible modes are: {}'.format(mode, MODES))
+        raise Exception('Unrecognised task: {}. Possible tasks are: {}'.format(task, taskS))
