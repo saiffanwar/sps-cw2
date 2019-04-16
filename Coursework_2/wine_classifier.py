@@ -80,6 +80,16 @@ def knn(k):
     for i in range(1,54):
         predictions = np.append(predictions, classify(i, k))
     return predictions
+
+def calculate_accuracy(gt_labels, pred_labels):
+    total = pred_labels.size
+    totalWrong = 0
+    for i in range(0,total):
+        if (pred_labels.item(i) != gt_labels.item(i)):
+            totalWrong += 1
+    accuracy = str(((total-totalWrong)/total)*100)
+    print(accuracy + '%')
+    return accuracy
 #################################################################
 
 def alternative_classifier(train_set, train_labels, test_set, **kwargs):

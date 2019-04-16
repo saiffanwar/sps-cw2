@@ -73,10 +73,10 @@ def calculate_accuracy(gt_labels, pred_labels):
     for i in range(0,total):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
-    accuracy = ((total-totalWrong)/total)*100
+    accuracy = str(((total-totalWrong)/total)*100)
+    print(accuracy + '%')
 
-    return str(accuracy)
+    return accuracy
 
 
 accuracy = calculate_accuracy(test_labels, knn(1))
-print(accuracy + '%')
