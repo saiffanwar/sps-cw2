@@ -45,41 +45,44 @@ def feature_selection(train_set, train_labels, **kwargs):
 
     return []
 ###########all functions required for knn###########################
-def euclideanDistance(wineNo):
-    distance = 0
-    features = (9,12)
+def euclideanDistance(train_set,test_set, wineNo):
+    features = [2,8,12]
     wine1=test_set[wineNo-1:wineNo].astype(np.float)
-    wine2=train_set[0:125].astype(np.float)
-    for x in  features:
-            distance += np.power(wine1[:,x]-wine2[:,x], 2)
-    allDistances = np.delete(np.sqrt(distance), wineNo-1)
+    allDistances = []
+    for y in range(0,125):
+        distance = 0
+        for x in features:
+            wine2 = train_set[y,x].astype(np.float)
+            distance += np.power(wine1[:,x]-wine2, 2)
+        allDistances = np.append(allDistances, distance )
     return allDistances
 
+
 #gets k nearest neighbours
-def nearestNeighbours(wineNo, k):
+def nearestNeighbours(train_set, test_set, wineNo, k):
     neighbours = []
-    distances = euclideanDistance(wineNo)
+    distances = euclideanDistance(train_set, test_set, wineNo)
     for x in range(0,k):
         neighbours = np.append(neighbours, np.amin(distances))
         distances = np.delete(distances, (np.argwhere(distances == np.amin(distances))))
     return neighbours
 
 #assigns class to wine in question
-def classify(wineNo, k):
-    distances = euclideanDistance(wineNo)
-    neighbours = nearestNeighbours(wineNo, k)
+def classify(train_set, train_labels, test_set, wineNo, k):
+    distances = euclideanDistance(train_set, test_set, wineNo)
+    neighbours = nearestNeighbours(train_set, test_set, wineNo, k)
     classes = []
     for i in range(k):
-        classes = np.append(classes,
-            (np.asscalar(train_labels[np.argwhere(distances == neighbours.item(i))])))
-    wineClass = mode(classes)
+        # if there are multiple neighbours at same distance away then pick first one
+        iclass = train_labels[np.argwhere(distances == (neighbours.item(i))).item(0)]
+        classes = np.append(classes, iclass)
+    (values,counts) = np.unique(classes,return_counts=True)
+    ind=np.argmax(counts)
+    wineClass = values[ind]
+
     return wineClass
 
-def knn(k):
-    predictions = []
-    for i in range(1,54):
-        predictions = np.append(predictions, classify(i, k))
-    return predictions
+    ###########ACCURACY#######################
 
 def calculate_accuracy(gt_labels, pred_labels):
     total = pred_labels.size
@@ -87,9 +90,17 @@ def calculate_accuracy(gt_labels, pred_labels):
     for i in range(0,total):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
-    accuracy = str(((total-totalWrong)/total)*100)
+            accuracy = str(((total-totalWrong)/total)*100)
     print(accuracy + '%')
     return accuracy
+
+
+def knn(train_set, train_labels, test_set, k):
+    predictions = []
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k))
+    accuracy = calculate_accuracy(test_labels, predictions)
+    return predictions
 #################################################################
 
 def alternative_classifier(train_set, train_labels, test_set, **kwargs):
@@ -122,6 +133,7 @@ def parse_args():
     args = parser.parse_args()
     task = args.task[0]
 
+
     return args, task
 
 
@@ -137,7 +149,7 @@ if __name__ == '__main__':
         selected_features = feature_selection(train_set, train_labels)
         print_features(selected_features)
     elif task == 'knn':
-        predictions = knn(1)
+        predictions = knn(train_set, train_labels, test_set, args.k)
         print_predictions(predictions)
     elif task == 'alt':
         predictions = alternative_classifier(train_set, train_labels, test_set)
