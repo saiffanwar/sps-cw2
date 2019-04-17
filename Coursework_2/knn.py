@@ -83,5 +83,6 @@ def knn(train_set, train_labels, test_set, k):
     accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
-accuracy, predictions = knn(train_set, train_labels, test_set, 2)
+accuracy, predictions = knn(train_set, train_labels, test_set, 1)
+print(predictions)
 np.savetxt('results.csv', predictions, delimiter=',', fmt='%d')

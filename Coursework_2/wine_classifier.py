@@ -41,17 +41,20 @@ def subplots(dataset, n, **kwargs):
        for y in range(0,n):
            ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours)
 ###########################################################
-def feature_selection(train_set, train_labels, **kwargs):
-
-    return []
+def feature_selection(train_set, train_labels, f, **kwargs):
+    if f == 3:
+        selected_features =[9,10,13]
+    else:
+        selected_features = [9,13]
+    return selected_features
 ###########all functions required for knn###########################
-def euclideanDistance(train_set,test_set, wineNo):
-    features = [2,8,12]
+def euclideanDistance(train_set,test_set, wineNo, f):
+    selected_features = np.array(feature_selection(train_set, train_labels, f))-1
     wine1=test_set[wineNo-1:wineNo].astype(np.float)
     allDistances = []
     for y in range(0,125):
         distance = 0
-        for x in features:
+        for x in selected_features:
             wine2 = train_set[y,x].astype(np.float)
             distance += np.power(wine1[:,x]-wine2, 2)
         allDistances = np.append(allDistances, distance )
@@ -59,18 +62,18 @@ def euclideanDistance(train_set,test_set, wineNo):
 
 
 #gets k nearest neighbours
-def nearestNeighbours(train_set, test_set, wineNo, k):
+def nearestNeighbours(train_set, test_set, wineNo, k, f):
     neighbours = []
-    distances = euclideanDistance(train_set, test_set, wineNo)
+    distances = euclideanDistance(train_set, test_set, wineNo, f)
     for x in range(0,k):
         neighbours = np.append(neighbours, np.amin(distances))
         distances = np.delete(distances, (np.argwhere(distances == np.amin(distances))))
     return neighbours
 
 #assigns class to wine in question
-def classify(train_set, train_labels, test_set, wineNo, k):
-    distances = euclideanDistance(train_set, test_set, wineNo)
-    neighbours = nearestNeighbours(train_set, test_set, wineNo, k)
+def classify(train_set, train_labels, test_set, wineNo, k, f):
+    distances = euclideanDistance(train_set, test_set, wineNo, f)
+    neighbours = nearestNeighbours(train_set, test_set, wineNo, k, f)
     classes = []
     for i in range(k):
         # if there are multiple neighbours at same distance away then pick first one
@@ -91,14 +94,15 @@ def calculate_accuracy(gt_labels, pred_labels):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
             accuracy = str(((total-totalWrong)/total)*100)
-    print(accuracy + '%')
+#    print(accuracy + '%')
     return accuracy
 
-
-def knn(train_set, train_labels, test_set, k):
+######calculates predictions for all wines of test_set
+def knn(train_set, train_labels, test_set, k, **kwargs):
+    f=2
     predictions = []
     for i in range(1,54):
-        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k))
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
     return predictions
 #################################################################
@@ -110,9 +114,12 @@ def alternative_classifier(train_set, train_labels, test_set, **kwargs):
 
 
 def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
-    # write your code here and make sure you return the predictions at the end of
-    # the function
-    return []
+    f=3
+    predictions = []
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
+    accuracy = calculate_accuracy(test_labels, predictions)
+    return predictions
 
 
 def knn_pca(train_set, train_labels, test_set, k, n_components=2, **kwargs):
@@ -125,6 +132,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('task', nargs=1, type=str, help='Running task. Must be one of the following tasks: {}'.format(TASKS))
     parser.add_argument('--k', nargs='?', type=int, default=1, help='Number of neighbours for knn')
+    parser.add_argument('--f', nargs='?', type=int, default=1, help='Number of features to display for feature_sel')
     parser.add_argument('--train_set_path', nargs='?', type=str, default='data/wine_train.csv', help='Path to the training set csv')
     parser.add_argument('--train_labels_path', nargs='?', type=str, default='data/wine_train_labels.csv', help='Path to training labels')
     parser.add_argument('--test_set_path', nargs='?', type=str, default='data/wine_test.csv', help='Path to the test set csv')
@@ -146,7 +154,7 @@ if __name__ == '__main__':
                                                                        test_set_path=args.test_set_path,
                                                                        test_labels_path=args.test_labels_path)
     if task == 'feature_sel':
-        selected_features = feature_selection(train_set, train_labels)
+        selected_features = feature_selection(train_set, train_labels, args.f)
         print_features(selected_features)
     elif task == 'knn':
         predictions = knn(train_set, train_labels, test_set, args.k)
