@@ -24,15 +24,15 @@ colours[train_labels == 3] = class_3_colour
 
 
 ###########################################################
-def feature_selection(train_set, train_labels, f, x, y):
+def feature_selection(train_set, train_labels, f,):
     if f == 3:
-        selected_features =[9,10,13]
+        selected_features =[1,7,2]
     else:
-        selected_features = [x,y]
+        selected_features = [7,10]
     return selected_features
 ###########all functions required for knn###########################
-def euclideanDistance(train_set,test_set, wineNo, f, x, y):
-    selected_features = np.array(feature_selection(train_set, train_labels, f, x, y))-1
+def euclideanDistance(train_set,test_set, wineNo, f):
+    selected_features = np.array(feature_selection(train_set, train_labels, f))-1
     wine1=test_set[wineNo-1:wineNo].astype(np.float)
     allDistances = []
     for y in range(0,125):
@@ -45,18 +45,18 @@ def euclideanDistance(train_set,test_set, wineNo, f, x, y):
 
 
 #gets k nearest neighbours
-def nearestNeighbours(train_set, test_set, wineNo, k, f, x, y):
+def nearestNeighbours(train_set, test_set, wineNo, k, f):
     neighbours = []
-    distances = euclideanDistance(train_set, test_set, wineNo, f, x, y)
+    distances = euclideanDistance(train_set, test_set, wineNo, f)
     for x in range(0,k):
         neighbours = np.append(neighbours, np.amin(distances))
         distances = np.delete(distances, (np.argwhere(distances == np.amin(distances))))
     return neighbours
 
 #assigns class to wine in question
-def classify(train_set, train_labels, test_set, wineNo, k, f, x, y):
-    distances = euclideanDistance(train_set, test_set, wineNo, f, x, y)
-    neighbours = nearestNeighbours(train_set, test_set, wineNo, k, f, x, y)
+def classify(train_set, train_labels, test_set, wineNo, k, f):
+    distances = euclideanDistance(train_set, test_set, wineNo, f)
+    neighbours = nearestNeighbours(train_set, test_set, wineNo, k, f)
     classes = []
     for i in range(k):
         # if there are multiple neighbours at same distance away then pick first one
@@ -77,22 +77,45 @@ def calculate_accuracy(gt_labels, pred_labels):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
     accuracy = str(((total-totalWrong)/total)*100)
+    accuracy = ((total-totalWrong)/total)*100
 #    print(accuracy + '%')
     return accuracy
 
 ######calculates predictions for all wines of test_set
-def knn(train_set, train_labels, test_set, k, x, y):
+def knn(train_set, train_labels, test_set, k):
     f=2
     predictions = []
     for i in range(1,54):
-        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f, x, y))
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
         accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
-for x in range(1,14):
-    for y in range(1,14):
-        accuracy, predictions = knn(train_set, train_labels, test_set, 1, x, y)
-        print([x,y])
-        print(accuracy)
+def knn3d(train_set, train_labels, test_set, k):
+    f=3
+    predictions = []
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
+        accuracy = calculate_accuracy(test_labels, predictions)
+    return accuracy, predictions
 
+def knnaccuracy():
+    accuracies= []
+    features = []
+    for x in range(1,14):
+        for y in range(1,14):
+            for z in range(1,14):
+                accuracy, predictions = knn(train_set, train_labels, test_set, 1)
+                accuracies = np.append(accuracies, accuracy)
+
+                print((x,y,z))
+                print(accuracy)
+    maxaccuracy = np.amax(accuracies)
+    print(accuracies)
+    maxfeature = np.argwhere(accuracies == maxaccuracy)
+    #returns index of features that give max accuracy
+    print(maxfeature)
+    return maxfeature, maxaccuracy, accuracies, features
+
+accuracy, predictions = knn(train_set, train_labels, test_set, 1)
+print(accuracy, predictions)
 #np.savetxt('results.csv', predictions, delimiter=',', fmt='%d')
