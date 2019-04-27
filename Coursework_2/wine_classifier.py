@@ -124,8 +124,10 @@ def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
 
 
 def knn_pca(train_set, train_labels, test_set, k, n_components=2, **kwargs):
-    # write your code here and make sure you return the predictions at the end of
-    # the function
+    def pca_model(n_components=2):
+    pca = PCA(n_components)
+    return pca
+pca = pca_model(2)
     return []
 
 
