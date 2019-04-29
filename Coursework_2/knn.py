@@ -9,6 +9,7 @@ from pprint import pprint
 from utilities import load_data
 from sklearn.decomposition import PCA
 train_set, train_labels, test_set, test_labels = load_data()
+print(test_labels)
 
 class_1_colour = r'#3366ff'
 class_2_colour = r'#cc3300'
@@ -85,7 +86,8 @@ def calculate_accuracy(gt_labels, pred_labels):
     return accuracy
 
 ######calculates predictions for all wines of test_set
-def knn(train_set, train_labels, test_set, k, f):
+def knn(train_set, train_labels, test_set, k):
+    f=2
     predictions = []
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
@@ -135,11 +137,15 @@ def pca_model(n_components=2):
     plt.show()
     return scipy_train_transformed, scipy_test
 
+
 def knn_pca(train_labels, k):
     f=0
+    predictions = []
     train_set, test_set = pca_model(2)
-    accuracy, predictions = knn(train_set, train_labels, test_set, k, f)
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
+        accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
-accuracy, predictions = knn_pca(train_labels, 2)
+accuracy, predictions = knn_pca(train_labels, 5)
 print(accuracy)

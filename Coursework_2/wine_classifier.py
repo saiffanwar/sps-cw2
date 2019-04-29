@@ -13,6 +13,8 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from utilities import load_data, print_features, print_predictions
+from sklearn.decomposition import PCA
+
 from statistics import mode, StatisticsError
 # you may use these colours to produce the scatter plots
 CLASS_1_C = r'#3366ff'
@@ -35,18 +37,24 @@ colours = np.zeros_like(train_labels, dtype=np.object)
 colours[train_labels == 1] = CLASS_1_C
 colours[train_labels == 2] = CLASS_2_C
 colours[train_labels == 3] = CLASS_3_C
+classes = np.unique(train_labels)
 
 def subplots(dataset, n, **kwargs):
     for x in range(0,n):
        for y in range(0,n):
            ax[x,y].scatter(dataset[:,x], dataset[:, y], c=colours)
+
 #######################select features between 1-13####################################
-def feature_selection(train_set, train_labels, f, **kwargs):
+def feature_selection(train_set, train_labels, f):
     if f == 3:
         selected_features =[1,7,2]
+
+    if f == 2:
+            selected_features = [7,10]
     else:
-        selected_features = [1,7]
+        selected_features = [1]
     return selected_features
+
 ###########all functions required for knn###########################
 def euclideanDistance(train_set,test_set, wineNo, f):
     selected_features = np.array(feature_selection(train_set, train_labels, f))-1
@@ -87,7 +95,6 @@ def classify(train_set, train_labels, test_set, wineNo, k, f):
 
 
 ###########ACCURACY#######################
-
 def calculate_accuracy(gt_labels, pred_labels):
     total = pred_labels.size
     totalWrong = 0
@@ -106,8 +113,8 @@ def knn(train_set, train_labels, test_set, k, **kwargs):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
     return predictions
-#################################################################
 
+####################ALTERNATE CLASSIFIER#############################
 def alternative_classifier(train_set, train_labels, test_set, **kwargs):
     # write your code here and make sure you return the predictions at the end of
     # the function
@@ -122,15 +129,31 @@ def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
     accuracy = calculate_accuracy(test_labels, predictions)
     return predictions
 
-
-def knn_pca(train_set, train_labels, test_set, k, n_components=2, **kwargs):
-    def pca_model(n_components=2):
+###########PCA########################
+def pca_model(n_components=2):
     pca = PCA(n_components)
-    return pca
-pca = pca_model(2)
-    return []
+    pca.fit(train_set)
+    scipy_train_transformed = pca.transform(train_set)
+    scipy_test = pca.transform(test_set)
+    for index_colour, b in enumerate(classes):
+        index = train_labels == b
+        pca_x = scipy_train_transformed[index,0]
+        pca_y = scipy_train_transformed[index,1]
+        plt.scatter(pca_x,pca_y * -1, c = class_colours[index_colour])
+    plt.show()
+    return scipy_train_transformed, scipy_test
 
 
+def knn_pca(train_set, train_labels, test_set, k, **kwargs):
+    f=0
+    predictions = []
+    train_set, test_set = pca_model(2)
+    for i in range(1,54):
+        predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
+    accuracy = calculate_accuracy(test_labels, predictions)
+    return predictions
+
+###################################################
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('task', nargs=1, type=str, help='Running task. Must be one of the following tasks: {}'.format(TASKS))
@@ -169,8 +192,8 @@ if __name__ == '__main__':
         predictions = knn_three_features(train_set, train_labels, test_set, args.k)
         print_predictions(predictions)
     elif task == 'knn_pca':
-        prediction = knn_pca(train_set, train_labels, test_set, args.k)
-        print_predictions(prediction)
+        predictions = knn_pca(train_set, train_labels, test_set, args.k)
+        print_predictions(predictions)
         #plots
     elif task == 'feature_plots':
         subplots(train_set1, n_features)
