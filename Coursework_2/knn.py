@@ -31,7 +31,7 @@ def feature_selection(train_set, train_labels, f,):
     if f == 2:
             selected_features = [7,10]
     else:
-        selected_features = [0]
+        selected_features = [1]
     return selected_features
 ###########all functions required for knn###########################
 def euclideanDistance(train_set,test_set, wineNo, f):
@@ -141,5 +141,5 @@ def knn_pca(train_labels, k):
     accuracy, predictions = knn(train_set, train_labels, test_set, k, f)
     return accuracy, predictions
 
-accuracy, predictions = knn_pca(train_labels, 10)
+accuracy, predictions = knn_pca(train_labels, 2)
 print(accuracy)
