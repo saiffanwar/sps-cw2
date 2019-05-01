@@ -11,9 +11,11 @@ from __future__ import print_function
 
 import argparse
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from utilities import load_data, print_features, print_predictions
 from sklearn.decomposition import PCA
+from sklearn.metrics import confusion_matrix
 
 from statistics import mode, StatisticsError
 # you may use these colours to produce the scatter plots
@@ -47,11 +49,14 @@ def subplots(dataset, n, **kwargs):
 #######################select features between 1-13####################################
 def feature_selection(train_set, train_labels, f):
     if f == 3:
-        selected_features =[1,7,2]
+        selected_features =[1,2,7]
 
     if f == 2:
             selected_features = [7,10]
-    else:
+    ##bayes features
+    if f == 1:
+            selected_features = [1,7]
+    if f == 0:
         selected_features = [1]
     return selected_features
 
@@ -102,7 +107,7 @@ def calculate_accuracy(gt_labels, pred_labels):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
     accuracy = str(((total-totalWrong)/total)*100)
-    print(accuracy + '%')
+    #print(accuracy + '%')
     return accuracy
 
 ######calculates predictions for all wines of test_set
@@ -112,13 +117,71 @@ def knn(train_set, train_labels, test_set, k, **kwargs):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
+    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 
+#############CONFUSION MATRIX#################
+def calculate_confusion_matrix(gt_labels, pred_labels):
+    Nc=3
+    CM = np.empty([Nc,Nc])
+    CM2 = np.empty([Nc,Nc])
+    for i in range(Nc):
+        for j in range(Nc):
+            i_classed_as_j = 0
+            for k in range(0,53):
+                if pred_labels[k] == j+1 and gt_labels[k] == i+1:
+                    i_classed_as_j = i_classed_as_j+1
+            CM[i,j] = i_classed_as_j/(np.count_nonzero(gt_labels==i+1))
+            CM2[i,j] = i_classed_as_j
+    print(CM)
+    print(CM2)
+    return CM
+
+
 ####################ALTERNATE CLASSIFIER#############################
+def normpdf(x, mean, sd):
+    var = float(sd)**2
+    denom = (2*math.pi*var)**.5
+    num = np.exp(-(x.astype(np.float)-(mean.astype(np.float)))**2/(2*var))
+    return num/denom
+
 def alternative_classifier(train_set, train_labels, test_set, **kwargs):
-    # write your code here and make sure you return the predictions at the end of
-    # the function
-    return []
+    # bayes
+    numberclass1 = 0
+    numberclass2 = 0
+    numberclass3 = 0
+    predictions = []
+    selected_features = feature_selection(train_set, train_labels, 1)
+    f1 = selected_features[0]-1
+    f2 = selected_features[1]-1
+    train_set_x = train_set[:,f1]
+    train_set_y = train_set[:,f2]
+
+    for y in range(0,125):
+        if (train_labels[y] == 1):
+            numberclass1 += 1
+        if (train_labels[y] == 2):
+            numberclass2 += 1
+        if (train_labels[y] == 3):
+            numberclass3 += 1
+
+    prior1 = numberclass1 / 125
+    prior2 = numberclass2 / 125
+    prior3 = numberclass3 / 125
+
+
+    #p(feat1|class1) = normpdf(test_set,np.mean(train_set[:,0]),np.var(train_set[:,0]))
+
+
+    for i in range(0,53):
+        args = []
+        args = np.append(args, ((normpdf(test_set[i,0], np.mean(train_set_x[train_labels == 1]), np.var(train_set_x[train_labels == 1]))) * (normpdf(test_set[i,6], np.mean(train_set_y[train_labels == 1]), np.var(train_set_y[train_labels == 1]))) * prior1))
+        args = np.append(args, ((normpdf(test_set[i,0], np.mean(train_set_x[train_labels == 2]), np.var(train_set_x[train_labels == 2]))) * (normpdf(test_set[i,6], np.mean(train_set_y[train_labels == 2]), np.var(train_set_y[train_labels == 2]))) * prior2))
+        args = np.append(args, ((normpdf(test_set[i,0], np.mean(train_set_x[train_labels == 3]), np.var(train_set_x[train_labels == 3]))) * (normpdf(test_set[i,6], np.mean(train_set_y[train_labels == 3]), np.var(train_set_y[train_labels == 3]))) * prior3))
+
+        predictions = np.append(predictions, np.argmax(args) +1)
+    accuracy = calculate_accuracy(test_labels, predictions)
+    return predictions
 
 
 def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
@@ -127,6 +190,7 @@ def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
+    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 
 ###########PCA########################
@@ -151,6 +215,7 @@ def knn_pca(train_set, train_labels, test_set, k, **kwargs):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
+    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 
 ###################################################
@@ -194,7 +259,6 @@ if __name__ == '__main__':
     elif task == 'knn_pca':
         predictions = knn_pca(train_set, train_labels, test_set, args.k)
         print_predictions(predictions)
-        #plots
     elif task == 'feature_plots':
         subplots(train_set1, n_features)
         plt.show()

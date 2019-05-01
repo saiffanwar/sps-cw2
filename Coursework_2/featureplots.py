@@ -43,13 +43,5 @@ subplots(train_set1, n_features)
 
 plt.show()
 
-#####plotting specific ones that look good#####
-
-#plt.scatter(train_set1[:, 8], train_set1[:, 9], c=colours)
-plt.show()
-#plt.scatter(train_set1[:, 8], train_set1[:, 12], c=colours)
-plt.show()
-plt.scatter(train_set1[:, 9], train_set1[:, 12], c=colours)
-plt.show()
-#plt.scatter(train_set1[:, 8], train_set1[:, 10], c=colours)
+plt.scatter(train_set1[:, 6], train_set1[:, 9], c=colours)
 plt.show()

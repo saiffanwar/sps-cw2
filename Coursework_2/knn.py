@@ -2,7 +2,7 @@ from __future__ import print_function # to avoid issues between Python 2 and 3 p
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+from mpl_toolkits.mplot3d import Axes3D
 from statistics import mode
 from pprint import pprint
 #from voronoi import plot_voronoi
@@ -27,11 +27,11 @@ colours[train_labels == 3] = class_3_colour
 ###########################################################
 def feature_selection(train_set, train_labels, f,):
     if f == 3:
-        selected_features =[1,7,2]
+        selected_features =[2,7,10]
 
     if f == 2:
             selected_features = [7,10]
-    else:
+    if f == 0:
         selected_features = [1]
     return selected_features
 ###########all functions required for knn###########################
@@ -102,23 +102,38 @@ def knn3d(train_set, train_labels, test_set, k):
         accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
- #def knnaccuracy():
-    accuracies= []
-    features = []
-    for x in range(1,14):
-        for y in range(1,14):
-            for z in range(1,14):
-                accuracy, predictions = knn(train_set, train_labels, test_set, 1, f)
-                accuracies = np.append(accuracies, accuracy)
 
-                print((x,y,z))
-                print(accuracy)
-    maxaccuracy = np.amax(accuracies)
-    print(accuracies)
-    maxfeature = np.argwhere(accuracies == maxaccuracy)
-    #returns index of features that give max accuracy
-    print(maxfeature)
-    return maxfeature, maxaccuracy, accuracies, features
+#3d plot
+def plot3d():
+    fig =plt.figure()
+    ax = Axes3D(fig)
+    plot = ax.scatter(train_set[:,0], train_set[:,1], train_set[:,6], c=colours)
+    #ax.set_xlabel("Feature 1")
+    ax.set_ylabel("Feature 2")
+    ax.set_zlabel("Feature 7")
+    plt.show()
+    return plot
+
+#plot3d()
+
+
+# def knnaccuracy():
+#    accuracies= []
+#    features = []
+#    for x in range(1,14):
+#        for y in range(1,14):
+#            for z in range(1,14):
+#                accuracy, predictions = knn(train_set, train_labels, test_set, 1, f)
+#                accuracies = np.append(accuracies, accuracy)
+#
+#                print((x,y,z))
+#                print(accuracy)
+#    maxaccuracy = np.amax(accuracies)
+#    print(accuracies)
+#    maxfeature = np.argwhere(accuracies == maxaccuracy)
+#    #returns index of features that give max accuracy
+#    print(maxfeature)
+#    return maxfeature, maxaccuracy, accuracies, features
 
 #accuracy, predictions = knn(train_set, train_labels, test_set, 1, f)
 #print(accuracy, predictions)
@@ -147,5 +162,5 @@ def knn_pca(train_labels, k):
         accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
-accuracy, predictions = knn_pca(train_labels, 5)
+accuracy, predictions = knn(train_set, train_labels, test_set, 1)
 print(accuracy)
