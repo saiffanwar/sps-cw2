@@ -55,7 +55,7 @@ def feature_selection(train_set, train_labels, f):
             selected_features = [7,10]
     ##bayes features
     if f == 1:
-            selected_features = [1,7]
+            selected_features = [10,7]
     if f == 0:
         selected_features = [1]
     return selected_features
@@ -70,7 +70,7 @@ def euclideanDistance(train_set,test_set, wineNo, f):
         for x in selected_features:
             wine2 = train_set[y,x].astype(np.float)
             distance += np.power(wine1[:,x]-wine2, 2)
-        allDistances = np.append(allDistances, distance )
+        allDistances = np.append(allDistances, distance)
     return allDistances
 
 
@@ -92,14 +92,14 @@ def classify(train_set, train_labels, test_set, wineNo, k, f):
         # if there are multiple neighbours at same distance away then pick first one
         iclass = train_labels[np.argwhere(distances == (neighbours.item(i))).item(0)]
         classes = np.append(classes, iclass)
-    try:
-        wineClass = mode(classes)
-    except StatisticsError:
-        wineClass = classify(train_set, train_labels, test_set, wineNo, k-1, f)
+    (values,counts) = np.unique(classes,return_counts=True)
+    ind=np.argmax(counts)
+    wineClass = values[ind]
+
     return wineClass
 
+    ###########ACCURACY#######################
 
-###########ACCURACY#######################
 def calculate_accuracy(gt_labels, pred_labels):
     total = pred_labels.size
     totalWrong = 0
@@ -107,19 +107,20 @@ def calculate_accuracy(gt_labels, pred_labels):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
     accuracy = str(((total-totalWrong)/total)*100)
+    #accuracy = ((total-totalWrong)/total)*100
     #print(accuracy + '%')
     return accuracy
 
 ######calculates predictions for all wines of test_set
-def knn(train_set, train_labels, test_set, k, **kwargs):
+def knn(train_set, train_labels, test_set, k):
     f=2
     predictions = []
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
-    accuracy = calculate_accuracy(test_labels, predictions)
+        accuracy = calculate_accuracy(test_labels, predictions)
+    print(accuracy)
     calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
-
 #############CONFUSION MATRIX#################
 def calculate_confusion_matrix(gt_labels, pred_labels):
     Nc=3

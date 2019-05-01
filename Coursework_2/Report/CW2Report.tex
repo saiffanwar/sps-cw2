@@ -1,11 +1,11 @@
 \documentclass[10pt]{article}
+\usepackage{fourier}
 \usepackage{lingmacros}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{amsmath}
-\usepackage[margin=0.75in]{geometry}
-
+\usepackage[margin=0.5in]{geometry}
 
 \begin{document}
 
@@ -75,49 +75,88 @@ Now we have to assign a class to each of the neighbours by reading the wine\_tra
 \noindent
 We can repeat this process for each of the wines in the wine\_test set and create our list of predictions for the test set. By comparing our predictions with the provided wine\_test\_labels, we can calculate an accuracy for our algorithm using the following formula:
 $$Accuracy = \frac{\text{Number of Correctly Predicted Wines}}{\text{Total Number of Wines}}$$
+\begin{figure}[h!]
+\captionsetup[subfigure]{labelformat=empty}
+\begin{subfigure}{\textwidth}
+\captionsetup[figure]{labelformat=empty}
+\centering
+\includegraphics[height=4.2cm]{accuracies.png}
+\caption{Fig 5: Plot of k and accuracies}
+\end{subfigure}%
+\end{figure}
 \\
 \noindent
-We observed that for our selected features (1 and 7) we would get a reasonably high accuracy of 88.68\%. As the number of nearest neighbours is increased, a higher accuracy is expected as it reduces the potential of plots from the train set that have anomalous positions on the scatter plot to affect the classification of the the test wine. Picking numerous neighbours will give a better overall prediction of the class. This can be observed from the general increase in accuracy as the number of neighbours is increased. The effect is drastic when observed in the situation where we select 5 neighbours, still using the features 1 and 7, the accuracy of the classifier becomes 100\%. This can cause implications however as we do not want the classifier to overfit to the training data. To avoid overfitting, the training set size can be increased.\\
+Fig 5 shows the effect increasing the number of neighbours, k, has on the accuracy of the classifier whilst the selected features remain the same. As can be observed from the figure, features (7 and 10) would get a reasonably high accuracy of 90.57\% at k=1. As the number of nearest neighbours is increased, we observe a lower accuracy until k=5 where after that it begins to increase again. This would be due to an increase in incorrect classification based on closest neighbours. The figure shows the accuracies for k in the range 0-20. It can also be seen that at a certain value of k, the accuracy plateaus. This can be assumed to be due to the wine in question being in a region where the modal class is the mode by a significant number.\\
 
 \noindent
 Here are the confusion matrices for each of the values of $k \in (1,2,3,4,5,6,7)$
 
 $$
-k=1,2
-\begin{bmatrix} 
-0.78 & 0.22 & 0\\
-0 & 1 & 0\\
-0 & 0.14 & 0.86
-\end{bmatrix}
-\quad
-k=3,4
-\begin{bmatrix} 
-0.94 & 0.06 & 0\\
-0 & 1 & 0\\
-0 & 0.14 & 0.86
-\end{bmatrix}
-\quad
-k=5, 6, 7
+k=1
 \begin{bmatrix} 
 1 & 0 & 0\\
-0 & 1 & 0\\
-0 & 0 & 1
+0.19 & 0.81 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+\quad
+k=2
+\begin{bmatrix} 
+1 & 0 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.14 & 0.86
+\end{bmatrix}
+\quad
+k=3
+\begin{bmatrix} 
+0.89 & 0.11 & 0\\
+0.19 & 0.81 & 0\\
+0 & 0.14 & 0.86
+\end{bmatrix}
+\quad
+k=4
+\begin{bmatrix} 
+1 & 0 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.14 & 0.86
+\end{bmatrix}
+$$
+$$
+k=5
+\begin{bmatrix} 
+0.78 & 0.22 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.14 & 0.86
+\end{bmatrix}
+\quad
+k=6
+\begin{bmatrix} 
+0.94 & 0.06 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.14 & 0.86
+\end{bmatrix}
+\quad
+k=5
+\begin{bmatrix} 
+0.89 & 0.11 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.14 & 0.86
 \end{bmatrix}
 \quad
 $$
 \\
 \noindent
-It can be observed that there are no wrong predictions between 1 and 3 (1 being classed as three and vice versa). This was expected as there is not an approximate boundary, in the scatter plot of the features, that is shared by both classes 1 and 3. From k=5 onwards, it can be seen that all the values along the diagonal's are 1 which indicates 100\% accuracy of the classifier as there are no incorrectly classified wines.
+It can be observed that there are no wrong predictions between 1 and 3 (1 being classed as three and vice versa). This was expected as there is not an approximate boundary, in the scatter plot of the features, that is shared by both classes 1 (Blue) and 3 (Yellow). Also we can see that there is the most discrepancy between the classification of wines that are actually class 2 (Red) but being classed as 1. This was to be expected from the visible overlap between the two classes in the plot of the features (Fig 3).
 
 \section*{Alternate Classifier - Na\"ive Bayes Classifier}
--\\
--\\
--\\
+-We implemented Naive Bayes Classifier as our alternative classifier. With the same features used for K-NN, (7 and 10), we got an accuracy of 62.3\%. This is a fair bit worse than K-NN with one neighbour which has an accuracy of 90.6\%. This could be due to the fact that K-NN is a discriminative classifier, whereas Naive Bayes is a generative classifier, therefore K-NN looks at just classifying the given data with a boundary between the two datasets by only looking at the data but Naive Bayes tries to assume where to classify the data based on how the previous data was generated. Most of the time discriminative classifiers are better than generative ones and our data supports this claim.\\
 
+\noindent
+K-NN has running time O(n) whereas Naive Bayes is almost O(1) time. This would mean in a larger dataset, K-NN would be less efficient, but since our data set is fairly small, there is no need to worry about run time and we can choose the best classifier.
+With K-NN the decision boundaries can take on any form, since its non-parametric, which when we have good feature selection this is means accuracy can be very high, whereas Bayes does not do this.\\
 
-
-
-
+\noindent
+Because of the fact that K-NN optimises locally by viewing an area around the given datapoint, outliers would seriously affect the accuracy since they could be in a cluster of different data points. When there are more outliers in the data, Naive Bayes would be a better choice of classifier since it doesn't have this problem. However, we have chosen good features with very few outliers and so in this case, with these features, K-NN would be preferable and the results support this.
+\\
 \section*{K-Nearest Neighbours with three features}
 
 Constructing the KNN Classifier with 3 features adds a new dimension to calculating the Euclidean Distance between the points. It incorporates all the possible combinations of the three features. For example, we selected features 1,2 and 7; proceeded to plot them on a 3-dimensional axis to observe the boundaries between the classes. Observing the 3d scatter plot perpendicular to each of the axis will give you the 2d plot of the other two features. Doing this in turn will give you an idea of the relationship between each of the features individually. \\
@@ -129,39 +168,75 @@ Here are some plots of features 1,2 and 7 in 3d space from each axis:
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}{.33\textwidth}
 \centering
-\includegraphics[height=4.2cm]{3d1x2.png}
-\caption{Fig 5: Plot of features 1 and 2 in 3d space}
-\end{subfigure}%
-\begin{subfigure}{.33\textwidth}
-\centering
-\includegraphics[height=4.2cm]{3d1x7.png}
-\caption{Fig 6: Plot of features 1 and 7 in 3d space}
-\end{subfigure}%
-\begin{subfigure}{.33\textwidth}
-\centering
 \includegraphics[height=4.2cm]{3d2x7.png}
-\caption{Fig 7: Plot of features 2 and 7 in 3d space}
+\caption{Fig 5: Plot of features 2 and 7 in 3d space}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
+\centering
+\includegraphics[height=4.2cm]{3d2x10.png}
+\caption{Fig 6: Plot of features 2 and 10 in 3d space}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
+\centering
+\includegraphics[height=4.2cm]{3d7x10.png}
+\caption{Fig 7: Plot of features 7 and 10 in 3d space}
 \end{subfigure}%
 \end{figure}
 
 \noindent
-Using three features can either be beneficial by picking features that compliment each other in their individual plots against the other features, or can in fact make the classifier worse overall due to a single pair of the combinations not showing a strong distinctive relationship between the classes. To select our 3 features, we kept our 2 features from our original KNN classifier so we could see what difference a single new dimension would make without changing our other features. We used a script to calculate the accuracy from each selection and we deemed feature 2 to be a fitting addition to the KNN classifier.  As can be seen in the figures above, each of the pairwise combinations of features show reasonable boundaries between each of the classes confirming that (1,2,7) is a suitable set of features to use for our 3d KNN classifier. \\
+Using three features can either be beneficial by picking features that compliment each other in their individual plots against the other features, or can in fact make the classifier worse overall due to a single pair of the combinations not showing a strong distinctive relationship between the classes. To select our 3 features, we kept our 2 features from our original KNN classifier so we could see what difference a single new dimension would make without changing our other features. We used a script to calculate the accuracy from each selection and we deemed feature 2 to be a fitting addition to the KNN classifier.  As can be seen in the figures above, each of the pairwise combinations of features show reasonable boundaries between each of the classes confirming that (2,7,10) is a suitable set of features to use for our 3d KNN classifier. \\
 
 \noindent
 We can compare the accuracy between using 3 features and using 2 features by comparing the confusion matrices for $k \in (1,2,3,4,5,6,7)$:
 
 $$
-k=1,2,3,4
+k=1
 \begin{bmatrix} 
-0.94 & 0.06 & 0\\
-0 & 1 & 0\\
+1 & 0 & 0\\
+0.1 & 0.9 & 0\\
 0 & 0.07 & 0.93
 \end{bmatrix}
 \quad
-k=5,6,7
+k=2
 \begin{bmatrix} 
 1 & 0 & 0\\
-0 & 1 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+\quad
+k=3
+\begin{bmatrix} 
+0.94 & 0.06 & 0\\
+0.19 & 0.81 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+\quad
+k=4
+\begin{bmatrix} 
+0.94 & 0.06 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+$$
+$$
+k=5
+\begin{bmatrix} 
+0.89 & 0.11 & 0\\
+0.19 & 0.81 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+\quad
+k=6
+\begin{bmatrix} 
+0.89 & 0.11 & 0\\
+0.24 & 0.76 & 0\\
+0 & 0.07 & 0.93
+\end{bmatrix}
+\quad
+k=7
+\begin{bmatrix} 
+0.89 & 0.11 & 0\\
+0.24 & 0.76 & 0\\
 0 & 0.07 & 0.93
 \end{bmatrix}
 \quad
@@ -169,13 +244,16 @@ $$
 \noindent
 \\
 \noindent
-From the matrices for KNN3d we can see that for smaller values of $k \in(1,2,3,4)$ the accuracy is better than KNN with 2 features whereas for larger values of $k \in(5,6,7)$ the accuracy is not as good. This would be due to feature 2 either contributing in a way that improves the accuracy or contributes incorrectly, thus making our classifier worse. The plot of features 1 \& 2 shows multiple crossovers the classes and doesn’t show distinct boundaries. This would negatively affect our classifier when taking more neighbours into account. The only difference between the confusion matrices for all the values of k is there are instances for $k \in(1,2,3,4)$ where there are wines predicted as class 2 when they are actually of class 1. This can be seen to possibly be due to the pairwise combination of features 2 \& 7 where there is significant crossover between class 1 (Blue) and class 2 (Red).
+From the confusion matrices of KNN3d we can deduce that the accuracies are generally better than the KNN with 2 features. However  The plot of features 2 \& 10 shows multiple crossovers the classes and doesn’t show distinct boundaries. This would negatively affect our classifier when taking more neighbours into account as shown by the trend where accuracy decreases as k increases. This can be seen to possibly be due to the pairwise combination of features 2 \& 7 where there is significant crossover between class 1 (Blue) and class 2 (Red).
 
 \section*{K-Nearest Neighbours Using Principle Component Analysis (PCA)}
-Principal Component Analysis (PCA) is a method to reduce the dimensionality of the data. It extracts the most useful parts of the data whilst aiming to maintain the same level of accuracy within the classifier. Using the PCA implementation from the Scipy library, we reduced our training data.\\
+KNN is a technique that is generally likely to overfit the data which is why there is a need to optimise the value of k and carefully select features which represent the train data and future data in a fair way. One way to reduce the effect of overfitting is to increase the size of the training data but with KNN being $\mathcal{O}(n)$ a Principal Component Analysis (PCA) is a method to reduce the dimensionality of the data. It extracts the most useful parts of the data whilst aiming to maintain the same level of accuracy within the classifier. Using the PCA implementation from the Scipy library, we reduced our training data.\\
 
 \noindent
 The following is a scatter plot of the PCA-reduced data and the original scatter plot of the features we selected:
+
+
+\noindent
 
 \begin{figure}[h!]
 \captionsetup[subfigure]{labelformat=empty}

@@ -5,11 +5,10 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from statistics import mode
 from pprint import pprint
-#from voronoi import plot_voronoi
+from sklearn.metrics import confusion_matrix
 from utilities import load_data
 from sklearn.decomposition import PCA
 train_set, train_labels, test_set, test_labels = load_data()
-print(test_labels)
 
 class_1_colour = r'#3366ff'
 class_2_colour = r'#cc3300'
@@ -81,8 +80,8 @@ def calculate_accuracy(gt_labels, pred_labels):
         if (pred_labels.item(i) != gt_labels.item(i)):
             totalWrong += 1
     accuracy = str(((total-totalWrong)/total)*100)
-    accuracy = ((total-totalWrong)/total)*100
-#    print(accuracy + '%')
+    #accuracy = ((total-totalWrong)/total)*100
+    #print(accuracy + '%')
     return accuracy
 
 ######calculates predictions for all wines of test_set
@@ -92,6 +91,7 @@ def knn(train_set, train_labels, test_set, k):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
         accuracy = calculate_accuracy(test_labels, predictions)
+    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return accuracy, predictions
 
 def knn3d(train_set, train_labels, test_set, k):
@@ -100,17 +100,33 @@ def knn3d(train_set, train_labels, test_set, k):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
         accuracy = calculate_accuracy(test_labels, predictions)
+    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return accuracy, predictions
 
+def calculate_confusion_matrix(gt_labels, pred_labels):
+    Nc=3
+    CM = np.empty([Nc,Nc])
+    CM2 = np.empty([Nc,Nc])
+    for i in range(Nc):
+        for j in range(Nc):
+            i_classed_as_j = 0
+            for k in range(0,53):
+                if pred_labels[k] == j+1 and gt_labels[k] == i+1:
+                    i_classed_as_j = i_classed_as_j+1
+            CM[i,j] = i_classed_as_j/(np.count_nonzero(gt_labels==i+1))
+            CM2[i,j] = i_classed_as_j
+    #print(CM)
+    #print(CM2)
+    return CM
 
 #3d plot
 def plot3d():
     fig =plt.figure()
     ax = Axes3D(fig)
-    plot = ax.scatter(train_set[:,0], train_set[:,1], train_set[:,6], c=colours)
-    #ax.set_xlabel("Feature 1")
-    ax.set_ylabel("Feature 2")
-    ax.set_zlabel("Feature 7")
+    plot = ax.scatter(train_set[:,1], train_set[:,6], train_set[:,9], c=colours)
+    ax.set_xlabel("Feature 2")
+    #ax.set_ylabel("Feature 7")
+    ax.set_zlabel("Feature 10")
     plt.show()
     return plot
 
@@ -148,8 +164,8 @@ def pca_model(n_components=2):
         index = train_labels == b
         pca_x = scipy_train_transformed[index,0]
         pca_y = scipy_train_transformed[index,1]
-        plt.scatter(pca_x,pca_y * -1, c = class_colours[index_colour])
-    plt.show()
+        #plt.scatter(pca_x,pca_y * -1, c = class_colours[index_colour])
+    #plt.show()
     return scipy_train_transformed, scipy_test
 
 
@@ -162,5 +178,7 @@ def knn_pca(train_labels, k):
         accuracy = calculate_accuracy(test_labels, predictions)
     return accuracy, predictions
 
-accuracy, predictions = knn(train_set, train_labels, test_set, 1)
-print(accuracy)
+for k in range(1,8):
+   accuracy, predictions = knn_pca(train_labels, k)
+   plt.scatter(accuracy, k, c = r'#000000#')
+plt.show()
