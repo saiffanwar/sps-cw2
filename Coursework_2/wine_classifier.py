@@ -49,13 +49,13 @@ def subplots(dataset, n, **kwargs):
 #######################select features between 1-13####################################
 def feature_selection(train_set, train_labels, f):
     if f == 3:
-        selected_features =[1,2,7]
+        selected_features =[2,7,10]
 
     if f == 2:
             selected_features = [7,10]
     ##bayes features
     if f == 1:
-            selected_features = [10,7]
+            selected_features = [7,10]
     if f == 0:
         selected_features = [1]
     return selected_features
@@ -118,8 +118,8 @@ def knn(train_set, train_labels, test_set, k):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
         accuracy = calculate_accuracy(test_labels, predictions)
-    print(accuracy)
-    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
+    #print(accuracy)
+    #calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 #############CONFUSION MATRIX#################
 def calculate_confusion_matrix(gt_labels, pred_labels):
@@ -191,7 +191,7 @@ def knn_three_features(train_set, train_labels, test_set, k, **kwargs):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
-    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
+    #calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 
 ###########PCA########################
@@ -200,12 +200,6 @@ def pca_model(n_components=2):
     pca.fit(train_set)
     scipy_train_transformed = pca.transform(train_set)
     scipy_test = pca.transform(test_set)
-    for index_colour, b in enumerate(classes):
-        index = train_labels == b
-        pca_x = scipy_train_transformed[index,0]
-        pca_y = scipy_train_transformed[index,1]
-        plt.scatter(pca_x,pca_y * -1, c = class_colours[index_colour])
-    plt.show()
     return scipy_train_transformed, scipy_test
 
 
@@ -216,7 +210,7 @@ def knn_pca(train_set, train_labels, test_set, k, **kwargs):
     for i in range(1,54):
         predictions = np.append(predictions, classify(train_set, train_labels, test_set, i, k, f))
     accuracy = calculate_accuracy(test_labels, predictions)
-    calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
+    #calculate_confusion_matrix(test_labels, predictions).astype(np.float)/np.sum(confusion_matrix(test_labels, predictions), axis=1)
     return predictions
 
 ###################################################
@@ -247,7 +241,7 @@ if __name__ == '__main__':
                                                                        test_labels_path=args.test_labels_path)
     if task == 'feature_sel':
         selected_features = feature_selection(train_set, train_labels, args.f)
-        print_features(selected_features)
+        print_features(np.array(selected_features)-1)
     elif task == 'knn':
         predictions = knn(train_set, train_labels, test_set, args.k)
         print_predictions(predictions)

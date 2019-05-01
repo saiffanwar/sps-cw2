@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[11pt]{article}
 \usepackage{fourier}
 \usepackage{lingmacros}
 \usepackage{graphicx}
@@ -15,7 +15,9 @@
 \maketitle
 
 
-\section*{Introduction}
+\section*{Side Note}
+In the report we have used the features in the range of 1-13.
+
 \section*{Choosing the best features}
 
 To choose the best features we observed all the plots of the pairwise combinations of the features and tried to find the ones which separated the data points into the three classes the best.
@@ -63,7 +65,7 @@ We also ran a script to calculate the accuracies of each pairwise combination. W
 
 \section*{K-Nearest Neighbours}
 
-We implemented the K-Nearest Neighbours (knn) algorithm using functions to represent the steps. The first step is to calculate the Euclidean Distance between the wine in question from the wine\_test set and every wine from the wine\_train set. For a two-dimensional knn this will only be for the two selected features using the following formula:
+We implemented the K-Nearest Neighbours (K-NN) algorithm using functions to represent the steps. The first step is to calculate the Euclidean Distance between the wine in question from the wine\_test set and every wine from the wine\_train set. For a two-dimensional K-NN this will only be for the two selected features using the following formula:
 $$d(x,y) = \sqrt{\sum_{n=1}^{k} (x_i - y_i)}$$
 \\
 \noindent
@@ -148,21 +150,21 @@ $$
 It can be observed that there are no wrong predictions between 1 and 3 (1 being classed as three and vice versa). This was expected as there is not an approximate boundary, in the scatter plot of the features, that is shared by both classes 1 (Blue) and 3 (Yellow). Also we can see that there is the most discrepancy between the classification of wines that are actually class 2 (Red) but being classed as 1. This was to be expected from the visible overlap between the two classes in the plot of the features (Fig 3).
 
 \section*{Alternate Classifier - Na\"ive Bayes Classifier}
--We implemented Naive Bayes Classifier as our alternative classifier. With the same features used for K-NN, (7 and 10), we got an accuracy of 62.3\%. This is a fair bit worse than K-NN with one neighbour which has an accuracy of 90.6\%. This could be due to the fact that K-NN is a discriminative classifier, whereas Naive Bayes is a generative classifier, therefore K-NN looks at just classifying the given data with a boundary between the two datasets by only looking at the data but Naive Bayes tries to assume where to classify the data based on how the previous data was generated. Most of the time discriminative classifiers are better than generative ones and our data supports this claim.\\
+We implemented Naive Bayes Classifier as our alternative classifier. With the same features used for K-NN, (7 and 10), we got an accuracy of 62.3\%. This is a fair bit worse than K-NN with one neighbour which has an accuracy of 90.6\%. This could be due to the fact that K-NN is a discriminative classifier, whereas Naive Bayes is a generative classifier, therefore K-NN looks at just classifying the given data with a boundary between the two datasets by only looking at the data but Naive Bayes tries to assume where to classify the data based on how the previous data was generated. Most of the time discriminative classifiers are better than generative ones and our data supports this claim.\\
 
 \noindent
-K-NN has running time O(n) whereas Naive Bayes is almost O(1) time. This would mean in a larger dataset, K-NN would be less efficient, but since our data set is fairly small, there is no need to worry about run time and we can choose the best classifier.
-With K-NN the decision boundaries can take on any form, since its non-parametric, which when we have good feature selection this is means accuracy can be very high, whereas Bayes does not do this.\\
+K-NN has running time $\mathcal{O}(n)$ whereas Naive Bayes is almost $\mathcal{O}(1)$ time. This would mean in a larger dataset, K-NN would be less efficient, but since our data set is fairly small, there is no need to worry about run time and we can choose the best classifier.
+With K-NN, the decision boundaries can take on any form, since its non-parametric, which when we have good feature selection, means accuracy can be very high whereas Bayes does not do this.\\
 
 \noindent
 Because of the fact that K-NN optimises locally by viewing an area around the given datapoint, outliers would seriously affect the accuracy since they could be in a cluster of different data points. When there are more outliers in the data, Naive Bayes would be a better choice of classifier since it doesn't have this problem. However, we have chosen good features with very few outliers and so in this case, with these features, K-NN would be preferable and the results support this.
 \\
 \section*{K-Nearest Neighbours with three features}
 
-Constructing the KNN Classifier with 3 features adds a new dimension to calculating the Euclidean Distance between the points. It incorporates all the possible combinations of the three features. For example, we selected features 1,2 and 7; proceeded to plot them on a 3-dimensional axis to observe the boundaries between the classes. Observing the 3d scatter plot perpendicular to each of the axis will give you the 2d plot of the other two features. Doing this in turn will give you an idea of the relationship between each of the features individually. \\
+Constructing the K-NN Classifier with 3 features adds a new dimension to calculating the Euclidean Distance between the points. It incorporates all the possible combinations of the three features. For example, we selected features 2, 7 and 10; proceeded to plot them on a 3-dimensional axis to observe the boundaries between the classes. Observing the 3d scatter plot perpendicular to each of the axis will give you the 2d plot of the other two features. Doing this in turn will give you an idea of the relationship between each of the features individually. \\
 
 \noindent
-Here are some plots of features 1,2 and 7 in 3d space from each axis:
+Here are some plots of features 2, 7 and 10 in 3d space from each axis:
 
 \begin{figure}[h!]
 \captionsetup[subfigure]{labelformat=empty}
@@ -184,7 +186,7 @@ Here are some plots of features 1,2 and 7 in 3d space from each axis:
 \end{figure}
 
 \noindent
-Using three features can either be beneficial by picking features that compliment each other in their individual plots against the other features, or can in fact make the classifier worse overall due to a single pair of the combinations not showing a strong distinctive relationship between the classes. To select our 3 features, we kept our 2 features from our original KNN classifier so we could see what difference a single new dimension would make without changing our other features. We used a script to calculate the accuracy from each selection and we deemed feature 2 to be a fitting addition to the KNN classifier.  As can be seen in the figures above, each of the pairwise combinations of features show reasonable boundaries between each of the classes confirming that (2,7,10) is a suitable set of features to use for our 3d KNN classifier. \\
+Using three features can either be beneficial by picking features that compliment each other in their individual plots against the other features, or can in fact make the classifier worse overall due to a single pair of the combinations not showing a strong distinctive relationship between the classes. To select our 3 features, we kept our 2 features from our original K-NN classifier so we could see what difference a single new dimension would make without changing our other features. We used a script to calculate the accuracy from each selection and we deemed feature 2 to be a fitting addition to the K-NN classifier.  As can be seen in the figures above, each of the pairwise combinations of features show reasonable boundaries between each of the classes confirming that (2,7,10) is a suitable set of features to use for our 3d K-NN classifier. \\
 
 \noindent
 We can compare the accuracy between using 3 features and using 2 features by comparing the confusion matrices for $k \in (1,2,3,4,5,6,7)$:
@@ -244,10 +246,10 @@ $$
 \noindent
 \\
 \noindent
-From the confusion matrices of KNN3d we can deduce that the accuracies are generally better than the KNN with 2 features. However  The plot of features 2 \& 10 shows multiple crossovers the classes and doesn’t show distinct boundaries. This would negatively affect our classifier when taking more neighbours into account as shown by the trend where accuracy decreases as k increases. This can be seen to possibly be due to the pairwise combination of features 2 \& 7 where there is significant crossover between class 1 (Blue) and class 2 (Red).
+From the confusion matrices of K-NN3d we can deduce that the accuracies are generally better than the K-NN with 2 features. However  The plot of features 2 \& 10 shows multiple crossovers the classes and doesn’t show distinct boundaries. This would negatively affect our classifier when taking more neighbours into account as shown by the trend where accuracy decreases as k increases. This can be seen to possibly be due to the pairwise combination of features 2 \& 7 where there is significant crossover between class 1 (Blue) and class 2 (Red).
 
 \section*{K-Nearest Neighbours Using Principle Component Analysis (PCA)}
-KNN is a technique that is generally likely to overfit the data which is why there is a need to optimise the value of k and carefully select features which represent the train data and future data in a fair way. One way to reduce the effect of overfitting is to increase the size of the training data but with KNN being $\mathcal{O}(n)$ a Principal Component Analysis (PCA) is a method to reduce the dimensionality of the data. It extracts the most useful parts of the data whilst aiming to maintain the same level of accuracy within the classifier. Using the PCA implementation from the Scipy library, we reduced our training data.\\
+K-NN is a technique that is generally likely to overfit the data which is why there is a need to optimise the value of k and carefully select features which represent the train data and future data in a fair way. One way to reduce the effect of overfitting is to increase the size of the training data but with K-NN being $\mathcal{O}(n)$ it would lead to the program becoming slow. Principal Component Analysis (PCA) is a method to reduce the dimensionality of the data to change a large data set with a large number of variables to a small set that still contains most of the data from the large set. It extracts the most useful parts of the data whilst aiming to maintain the same level of accuracy within the classifier. Using the PCA implementation from the Scipy library, we reduced our training data.\\
 
 \noindent
 The following is a scatter plot of the PCA-reduced data and the original scatter plot of the features we selected:
@@ -257,19 +259,25 @@ The following is a scatter plot of the PCA-reduced data and the original scatter
 
 \begin{figure}[h!]
 \captionsetup[subfigure]{labelformat=empty}
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.33\textwidth}
+\centering
+\includegraphics[height=4.2cm]{7and10.png}
+\caption{Fig 8: Plot of features 7 and 10}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
 \centering
 \includegraphics[height=4.2cm]{pca.png}
-\caption{Fig 8: Plot of PCA-reduced train\_set}
+\caption{Fig 9: Plot of PCA-reduced training data}
 \end{subfigure}%
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.33\textwidth}
 \centering
-\includegraphics[height=4.2cm]{1and7.png}
-\caption{Fig 9: Plot of features 1 and 7}
+\includegraphics[height=4.2cm]{pcaaccuracy.png}
+\caption{Fig 10: Plot of Accuracy of K-NN-PCA with k}
 \end{subfigure}%
 \end{figure}
-\noindent
 
+\noindent
+From the PCA scatter plot in Fig 8 we can see that although there is crossover between the different classes which shows in the accuracy. Observing, Fig 10, the accuracy, using the PCA data, in general is lower than the accuracy of using K-NN with our two manually selected features, which is expected. As described above, PCA focuses on making the program faster which has a tradeoff between speed and accuracy. However using PCA has reduced the chance of us overfitting to the training data by using collating all the features to create a new data set rather than excluding all the data except for our selected features.
 \end{document}  
 
 

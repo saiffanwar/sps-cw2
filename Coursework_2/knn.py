@@ -180,5 +180,5 @@ def knn_pca(train_labels, k):
 
 for k in range(1,8):
    accuracy, predictions = knn_pca(train_labels, k)
-   plt.scatter(accuracy, k, c = r'#000000#')
+   plt.scatter(accuracy, k, c = r'#000000')
 plt.show()

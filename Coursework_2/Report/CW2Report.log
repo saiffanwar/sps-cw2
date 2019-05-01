@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.4.30)  1 MAY 2019 11:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.4.30)  1 MAY 2019 11:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -9,8 +9,8 @@ LaTeX2e <2018-04-01> patch level 2
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2018/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -570,12 +570,12 @@ Package caption Info: End \AtBeginDocument code.
 * \topmargin=-73.135pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=10.0pt
+* \topskip=11.0pt
 * \footskip=30.0pt
-* \marginparwidth=65.0pt
-* \marginparsep=11.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
 * \columnsep=10.0pt
-* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -607,42 +607,42 @@ LaTeX Font Info:    Font shape `T1/futs/bx/n' in size <14.4> not available
 <3and10.png, id=1, 867.74188pt x 632.86438pt>
 File: 3and10.png Graphic file (type png)
 <use 3and10.png>
-Package pdftex.def Info: 3and10.png  used on input line 28.
+Package pdftex.def Info: 3and10.png  used on input line 30.
 (pdftex.def)             Requested size: 163.85313pt x 119.50148pt.
 LaTeX Font Info:    Font shape `FMX/futm/m/n' will be
-(Font)              scaled to size 9.19998pt on input line 30.
+(Font)              scaled to size 10.07397pt on input line 32.
 LaTeX Font Info:    Font shape `FMX/futm/m/n' will be
-(Font)              scaled to size 6.99199pt on input line 30.
+(Font)              scaled to size 7.63599pt on input line 32.
 LaTeX Font Info:    Font shape `FMX/futm/m/n' will be
-(Font)              scaled to size 5.51999pt on input line 30.
+(Font)              scaled to size 5.51999pt on input line 32.
 LaTeX Font Info:    Font shape `U/futm/m/n' will be
-(Font)              scaled to size 9.19998pt on input line 30.
+(Font)              scaled to size 10.07397pt on input line 32.
 LaTeX Font Info:    Font shape `U/futm/m/n' will be
-(Font)              scaled to size 6.99199pt on input line 30.
+(Font)              scaled to size 7.63599pt on input line 32.
 LaTeX Font Info:    Font shape `U/futm/m/n' will be
-(Font)              scaled to size 5.51999pt on input line 30.
+(Font)              scaled to size 5.51999pt on input line 32.
 <1and4.png, id=3, 867.74188pt x 632.86438pt>
 File: 1and4.png Graphic file (type png)
 <use 1and4.png>
-Package pdftex.def Info: 1and4.png  used on input line 33.
+Package pdftex.def Info: 1and4.png  used on input line 35.
 (pdftex.def)             Requested size: 163.85313pt x 119.50148pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--39
+Underfull \hbox (badness 10000) in paragraph at lines 39--41
 
  []
 
 <7and10.png, id=4, 819.06pt x 607.26875pt>
 File: 7and10.png Graphic file (type png)
 <use 7and10.png>
-Package pdftex.def Info: 7and10.png  used on input line 47.
+Package pdftex.def Info: 7and10.png  used on input line 49.
 (pdftex.def)             Requested size: 161.17204pt x 119.50148pt.
 <5and7.png, id=5, 867.74188pt x 632.86438pt>
 File: 5and7.png Graphic file (type png)
 <use 5and7.png>
-Package pdftex.def Info: 5and7.png  used on input line 52.
+Package pdftex.def Info: 5and7.png  used on input line 54.
 (pdftex.def)             Requested size: 163.85313pt x 119.50148pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 56--60
+Underfull \hbox (badness 10000) in paragraph at lines 58--62
 
  []
 
@@ -650,112 +650,106 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--60
 
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./3and1
 0.png> <./1and4.png> <./7and10.png> <./5and7.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 67--71
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--74
+Underfull \hbox (badness 10000) in paragraph at lines 74--76
 
  []
 
 <accuracies.png, id=17, 559.08875pt x 427.5975pt>
 File: accuracies.png Graphic file (type png)
 <use accuracies.png>
-Package pdftex.def Info: accuracies.png  used on input line 83.
+Package pdftex.def Info: accuracies.png  used on input line 85.
 (pdftex.def)             Requested size: 156.2452pt x 119.50148pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--90
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 151--152
+Underfull \hbox (badness 10000) in paragraph at lines 79--92
 
  []
 
 [2 <./accuracies.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 153--156
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--160
+Underfull \hbox (badness 10000) in paragraph at lines 155--158
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
+Underfull \hbox (badness 10000) in paragraph at lines 159--162
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
 
  []
 
 <3d2x7.png, id=25, 585.18625pt x 487.8225pt>
 File: 3d2x7.png Graphic file (type png)
 <use 3d2x7.png>
-Package pdftex.def Info: 3d2x7.png  used on input line 171.
+Package pdftex.def Info: 3d2x7.png  used on input line 173.
 (pdftex.def)             Requested size: 143.34956pt x 119.50148pt.
 <3d2x10.png, id=26, 590.205pt x 499.8675pt>
 File: 3d2x10.png Graphic file (type png)
 <use 3d2x10.png>
-Package pdftex.def Info: 3d2x10.png  used on input line 176.
+Package pdftex.def Info: 3d2x10.png  used on input line 178.
 (pdftex.def)             Requested size: 141.09373pt x 119.50148pt.
 <3d7x10.png, id=27, 631.35875pt x 497.86pt>
 File: 3d7x10.png Graphic file (type png)
 <use 3d7x10.png>
-Package pdftex.def Info: 3d7x10.png  used on input line 181.
+Package pdftex.def Info: 3d7x10.png  used on input line 183.
 (pdftex.def)             Requested size: 151.53882pt x 119.50148pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--188
+Underfull \hbox (badness 10000) in paragraph at lines 188--190
 
- []
-
-
-Overfull \hbox (13.29271pt too wide) in paragraph at lines 189--191
-\T1/futs/m/n/10 We can com-pare the ac-cu-racy be-tween us-ing 3 fea-tures and 
-us-ing 2 fea-tures by com-par-ing the con-fu-sion ma-tri-ces for $\FML/futmi/m/
-it/10 k \FMS/futm/m/n/10 2 \T1/futs/m/n/10 (1\FML/futmi/m/it/10 ; \T1/futs/m/n/
-10 2\FML/futmi/m/it/10 ; \T1/futs/m/n/10 3\FML/futmi/m/it/10 ; \T1/futs/m/n/10 
-4\FML/futmi/m/it/10 ; \T1/futs/m/n/10 5\FML/futmi/m/it/10 ; \T1/futs/m/n/10 6\F
-ML/futmi/m/it/10 ; \T1/futs/m/n/10 7)$: 
  []
 
 [3 <./3d2x7.png> <./3d2x10.png> <./3d7x10.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
 
  []
 
-<pca.png, id=34, 822.07124pt x 602.25pt>
+File: 7and10.png Graphic file (type png)
+<use 7and10.png>
+Package pdftex.def Info: 7and10.png  used on input line 264.
+(pdftex.def)             Requested size: 161.17204pt x 119.50148pt.
+<pca.png, id=35, 822.07124pt x 602.25pt>
 File: pca.png Graphic file (type png)
 <use pca.png>
-Package pdftex.def Info: pca.png  used on input line 262.
+Package pdftex.def Info: pca.png  used on input line 269.
 (pdftex.def)             Requested size: 163.11932pt x 119.50148pt.
-<1and7.png, id=35, 867.74188pt x 632.86438pt>
-File: 1and7.png Graphic file (type png)
-<use 1and7.png>
-Package pdftex.def Info: 1and7.png  used on input line 267.
-(pdftex.def)             Requested size: 163.85313pt x 119.50148pt.
+<pcaaccuracy.png, id=36, 600.2425pt x 403.5075pt>
+File: pcaaccuracy.png Graphic file (type png)
+<use pcaaccuracy.png>
+Package pdftex.def Info: pcaaccuracy.png  used on input line 274.
+(pdftex.def)             Requested size: 177.76608pt x 119.50148pt.
 
-Package caption Warning: Unused \captionsetup[figure] on input line 81.
+Package caption Warning: Unused \captionsetup[figure] on input line 83.
 See the caption package documentation for explanation.
 
-[4 <./pca.png> <./1and7.png>] (./CW2Report.aux) ) 
+[4 <./pca.png> <./pcaaccuracy.png>] (./CW2Report.aux) ) 
 Here is how much of TeX's memory you used:
- 4774 strings out of 492649
- 69650 string characters out of 6129622
- 142040 words of memory out of 5000000
- 8557 multiletter control sequences out of 15000+600000
- 65446 words of font info for 76 fonts, out of 8000000 for 9000
+ 4776 strings out of 492649
+ 69732 string characters out of 6129622
+ 140065 words of memory out of 5000000
+ 8559 multiletter control sequences out of 15000+600000
+ 69974 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,8n,39p,870b,449s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2018/texmf
--dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/typ
-e1/public/fourier/fourier-mcl.pfb></usr/local/texlive/2018/texmf-dist/fonts/typ
-e1/public/fourier/fourier-mex.pfb></usr/local/texlive/2018/texmf-dist/fonts/typ
-e1/public/fourier/fourier-ms.pfb></usr/local/texlive/2018/texmf-dist/fonts/type
-1/adobe/utopia/putb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/adobe
-/utopia/putr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/adobe/utopia
-/putri8a.pfb>
-Output written on CW2Report.pdf (4 pages, 946548 bytes).
+ 41i,8n,39p,873b,468s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018
+/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fon
+ts/type1/public/fourier/fourier-mcl.pfb></usr/local/texlive/2018/texmf-dist/fon
+ts/type1/public/fourier/fourier-mex.pfb></usr/local/texlive/2018/texmf-dist/fon
+ts/type1/public/fourier/fourier-ms.pfb></usr/local/texlive/2018/texmf-dist/font
+s/type1/adobe/utopia/putb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1
+/adobe/utopia/putr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/adobe/
+utopia/putri8a.pfb>
+Output written on CW2Report.pdf (4 pages, 856718 bytes).
 PDF statistics:
  63 PDF objects out of 1000 (max. 8388607)
  30 compressed objects within 1 object stream
